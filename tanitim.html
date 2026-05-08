@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Çalık TV</title>
+
+<style>
+html {
+  scroll-behavior: smooth;
+}
+
+/* SCROLL ANİMASYON */
+.fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* BODY */
+body {
+  margin: 0;
+  font-family: Arial;
+  color: white;
+  overflow-x: hidden;
+  background: radial-gradient(circle at center, #1a0000 0%, #000000 70%);
+  animation: bgPulse 6s ease-in-out infinite;
+}
+
+@keyframes bgPulse {
+  0% { background: radial-gradient(circle at center, #1a0000 0%, #000000 70%); }
+  50% { background: radial-gradient(circle at center, #330000 0%, #000000 80%); }
+  100% { background: radial-gradient(circle at center, #1a0000 0%, #000000 70%); }
+}
+
+/* GLOW */
+body::after {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,0,0,0.08), transparent 70%);
+  pointer-events: none;
+}
+
+/* PARTICLES */
+#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* 🔥 NAV PANEL */
+.nav-wrapper {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+
+  padding: 10px 20px;
+  border-radius: 40px;
+
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(15px);
+
+  border: 1px solid rgba(255,0,0,0.3);
+  box-shadow: 
+    0 0 20px rgba(255,0,0,0.4),
+    inset 0 0 10px rgba(255,0,0,0.2);
+}
+
+/* NAV */
+nav {
+  display: flex;
+  gap: 15px;
+}
+
+nav a {
+  color: #ff1a1a;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 12px 25px;
+  border: 2px solid #ff1a1a;
+  border-radius: 30px;
+  background: black;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+nav a::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ff1a1a;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+
+nav a:hover::before {
+  transform: scaleX(1);
+
+}
+
+nav a:hover {
+  color: black;
+  transform: scale(1.1);
+}
+
+nav a:active {
+  transform: scale(1.25);
+}
+
+/* SECTIONS */
+.section {
+  min-height: 100vh;
+  padding: 140px 20px 40px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+/* GALERİ */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.gallery img {
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.4s;
+  border: 2px solid #ff1a1a;
+}
+
+.gallery img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px red;
+}
+
+/* LIGHTBOX */
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#lightbox img {
+  max-width: 90%;
+  max-height: 80%;
+  border-radius: 10px;
+  box-shadow: 0 0 30px red;
+}
+
+h1 {
+  color: #ff1a1a;
+  text-shadow: 0 0 20px red;
+}
+
+p {
+  color: #ccc;
+  max-width: 700px;
+  margin: auto;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- 🔥 YENİ NAV -->
+<div class="nav-wrapper">
+  <nav>
+    <a href="#anasayfa">Ana Sayfa</a>
+    <a href="#hakkinda">Hakkında</a>
+    <a href="#fotograflar">Fotoğraflar</a>
+    <a href="#iletisim">İletişim</a>
+  </nav>
+</div>
+
+<div class="section fade-in" id="anasayfa">
+  <h1>Çalık TV</h1>
+  <p>Hoş geldin! Bu site modern neon tasarımıyla hazırlanmıştır.</p>
+</div>
+
+<div class="section fade-in" id="hakkinda">
+  <h1>Okul Hakkında</h1>
+  <p>
+    Nuh Mehmet Küçükçalık Anadolu Lisesi, öğrencilerine kaliteli eğitim sunan
+    ve onları geleceğe hazırlayan önemli bir eğitim kurumudur.
+  </p>
+</div>
+
+<div class="section fade-in" id="fotograflar">
+  <h1>Fotoğraflar</h1>
+  <div class="gallery">
+    <img src="OKUL1.jpg" onclick="openImage(this)">
+    <img src="OKUL2.webp" onclick="openImage(this)">
+    <img src="OKUL3.png" onclick="openImage(this)">
+  </div>
+</div>
+
+<div id="lightbox" onclick="closeImage()">
+  <img id="lightbox-img">
+</div>
+
+<div class="section fade-in" id="iletisim">
+  <h1>İletişim</h1>
+  <p>Email: ornek@mail.com</p>
+</div>
+
+<script>
+// LIGHTBOX
+function openImage(img) {
+  document.getElementById("lightbox").style.display = "flex";
+  document.getElementById("lightbox-img").src = img.src;
+}
+
+function closeImage() {
+  document.getElementById("lightbox").style.display = "none";
+}
+
+// SCROLL ANİMASYON
+const faders = document.querySelectorAll(".fade-in");
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
+});
+
+faders.forEach(el => observer.observe(el));
+
+// PARTICLES
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+
+let particles = [];
+
+for (let i = 0; i < 80; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2,
+    speedX: (Math.random() - 0.5),
+    speedY: (Math.random() - 0.5)
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+
+    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = "#ff1a1a";
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+window.addEventListener("resize", resizeCanvas);
+</script>
+
+</body>
+</html>
